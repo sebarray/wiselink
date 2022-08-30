@@ -1,0 +1,31 @@
+package db
+
+import (
+	"github.com/sebarray/wiselink/model"
+	"github.com/sebarray/wiselink/service"
+	"golang.org/x/crypto/bcrypt"
+)
+
+func Login(user model.User) (string, error) {
+
+	exist, u, err := UserExist(user)
+	if !exist {
+		return "", err
+	}
+	err = bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(user.Password))
+	if err != nil {
+		return "", err
+	}
+
+	if !exist {
+		return "", err
+	}
+
+	t, err := service.CreateToken(u)
+
+	if err != nil {
+		return "", err
+	}
+
+	return t, nil
+}
