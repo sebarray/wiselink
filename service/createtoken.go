@@ -5,12 +5,11 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt"
-	"github.com/sebarray/wiselink/config"
 	"github.com/sebarray/wiselink/model"
 )
 
 func CreateToken(user model.User) (string, error) {
-	config.Loadenv()
+
 	claims := &model.JwtClaims{
 		Name:  user.Name,
 		Id:    user.Id,

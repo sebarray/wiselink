@@ -7,11 +7,10 @@ import (
 	"os"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/sebarray/wiselink/config"
 )
 
 func ConnectionDB() *sql.DB {
-	config.Loadenv()
+
 	var err error
 	driver := "mysql"
 	cadena := os.Getenv("STRING_CONNECTION")
