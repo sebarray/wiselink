@@ -15,7 +15,7 @@ func Login(ctx echo.Context) error {
 	var t string
 	body, err := ioutil.ReadAll(ctx.Request().Body)
 	if err != nil {
-		ctx.Error(err)
+		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
 	}
 	err = json.Unmarshal(body, &user)
 	if err != nil {
@@ -25,7 +25,7 @@ func Login(ctx echo.Context) error {
 
 	if err != nil {
 		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
-		return err
+
 	}
 
 	return ctx.JSON(http.StatusOK, echo.Map{

@@ -21,14 +21,17 @@ func PutEvent(ctx echo.Context) error {
 	body, err := ioutil.ReadAll(ctx.Request().Body)
 	if err != nil {
 		ctx.Error(err)
+		return err
 	}
 	err = json.Unmarshal(body, &event)
 	if err != nil {
 		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
+		return err
 	}
 	event, err = db.EventUpdate(event)
 	if err != nil {
 		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
+		return err
 	}
 
 	return ctx.JSON(http.StatusOK, event)

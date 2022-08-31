@@ -1,6 +1,8 @@
 package db
 
 import (
+	"fmt"
+
 	"github.com/sebarray/wiselink/model"
 )
 
@@ -13,7 +15,18 @@ func update(event model.Event) error {
 	if err != nil {
 		return err
 	}
-	insert.Exec()
+	result, err := insert.Exec()
+	if err != nil {
+		return err
+	}
+	rowAf, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rowAf == 0 {
+		return fmt.Errorf("se ocasiono un error resvise su request")
+	}
+
 	return nil
 }
 

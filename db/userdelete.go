@@ -2,12 +2,12 @@ package db
 
 import "fmt"
 
-func DeleteEvent(id string) error {
-	err := deleteSuscribe(id)
+func DeleteUser(id string) error {
+	err := deleteSuscribeUser(id)
 	if err != nil {
 		return err
 	}
-	querysql := fmt.Sprintf("DELETE FROM event WHERE id='%s' ;", id)
+	querysql := fmt.Sprintf("DELETE FROM user WHERE id='%s' ;", id)
 	conn := ConnectionDB()
 	defer conn.Close()
 	query, err := conn.Prepare(querysql)
@@ -29,8 +29,8 @@ func DeleteEvent(id string) error {
 	return nil
 }
 
-func deleteSuscribe(id string) error {
-	querysql := fmt.Sprintf("DELETE FROM suscribe WHERE idevent='%s' ;", id)
+func deleteSuscribeUser(id string) error {
+	querysql := fmt.Sprintf("DELETE FROM suscribe WHERE iduser='%s' ;", id)
 	conn := ConnectionDB()
 	defer conn.Close()
 	query, err := conn.Prepare(querysql)
@@ -41,6 +41,5 @@ func deleteSuscribe(id string) error {
 	if err != nil {
 		return err
 	}
-
 	return nil
 }

@@ -17,17 +17,20 @@ func PostSuscribe(ctx echo.Context) error {
 
 	body, err := ioutil.ReadAll(ctx.Request().Body)
 	if err != nil {
-		ctx.Error(err)
+		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
+		return err
 	}
 	err = json.Unmarshal(body, &event)
 	if err != nil {
 		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
+		return err
 	}
 
 	db.CreateSuscribe(claims.Id, event)
 
 	if err != nil {
 		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
+		return err
 	}
 
 	return ctx.JSON(http.StatusOK, event)

@@ -8,16 +8,12 @@ import (
 
 func Login(user model.User) (string, error) {
 
-	exist, u, err := UserExist(user)
-	if !exist {
+	u, err := UserExist(user)
+	if err != nil {
 		return "", err
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(user.Password))
 	if err != nil {
-		return "", err
-	}
-
-	if !exist {
 		return "", err
 	}
 

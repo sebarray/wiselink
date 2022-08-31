@@ -19,15 +19,18 @@ func DeleteEvent(ctx echo.Context) error {
 	var event model.Event
 	body, err := ioutil.ReadAll(ctx.Request().Body)
 	if err != nil {
-		ctx.Error(err)
+		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
+		return err
 	}
 	err = json.Unmarshal(body, &event)
 	if err != nil {
 		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
+		return err
 	}
 	err = db.DeleteEvent(event.Id)
 	if err != nil {
 		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
+		return err
 	}
 
 	return ctx.JSON(http.StatusOK, event)

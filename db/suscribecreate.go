@@ -8,11 +8,10 @@ import (
 	"github.com/sebarray/wiselink/model"
 )
 
-func CreateSuscribe(userId string, event model.Event) (bool, error) {
-
+func CreateSuscribe(userId string, event model.Event) error {
+	var err error
 	if !time.Now().Before(event.Date) {
-		fmt.Println("ODIO MI VIDA")
-		return false, nil
+		return fmt.Errorf("no es posible anotarse a eventos completados")
 	}
 
 	id := uuid.New().String()
@@ -21,12 +20,12 @@ func CreateSuscribe(userId string, event model.Event) (bool, error) {
 	defer conn.Close()
 	insert, err := conn.Prepare(QueryCreateSuscribe(id, userId, event.Id))
 	if err != nil {
-		return false, err
+		return err
 	}
 	_, err = insert.Exec()
 	if err != nil {
-		return false, err
+		return err
 	}
 
-	return true, nil
+	return nil
 }

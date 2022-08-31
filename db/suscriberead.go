@@ -7,7 +7,7 @@ import (
 )
 
 func ReadSuscribe(filter, id string) ([]model.Event, error) {
-	Checkconnection()
+
 	var suscribes []model.Event
 	var suscribe model.Event
 	conn := ConnectionDB()
