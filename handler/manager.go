@@ -6,13 +6,14 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
+	"github.com/sebarray/wiselink/config"
 	"github.com/sebarray/wiselink/routes/v1"
 )
 
 func Manager() {
 
 	e := echo.New()
-	e.Use(middleware.Logger())
+	e.Use(middleware.Logger(), middleware.CORSWithConfig(config.GetCors()))
 	r := e.Group("/event")
 	r.Use(middleware.Logger())
 	routesSuscribe := e.Group("/suscribe")

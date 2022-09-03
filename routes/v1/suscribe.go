@@ -8,7 +8,7 @@ import (
 )
 
 func Suscribe(s *echo.Group) {
-	s.Use(middleware.JWTWithConfig(config.Jwt()))
+	s.Use(middleware.JWTWithConfig(config.Jwt()), middleware.CORSWithConfig(config.GetCors()))
 	s.GET("", controller.GetSuscribe)
 	s.POST("", controller.PostSuscribe)
 }
