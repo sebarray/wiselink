@@ -1,14 +1,18 @@
-package db
+package operationUser
 
-import "fmt"
+import (
+	"fmt"
 
-func DeleteEvent(id string) error {
-	err := deleteSuscribe(id)
+	"github.com/sebarray/wiselink/db"
+)
+
+func DeleteUser(id string) error {
+	err := deleteSuscribeUser(id)
 	if err != nil {
 		return err
 	}
-	querysql := fmt.Sprintf("DELETE FROM event WHERE id='%s' ;", id)
-	conn := ConnectionDB()
+	querysql := fmt.Sprintf("DELETE FROM user WHERE id='%s' ;", id)
+	conn := db.ConnectionDB()
 	defer conn.Close()
 	query, err := conn.Prepare(querysql)
 	if err != nil {
@@ -29,9 +33,9 @@ func DeleteEvent(id string) error {
 	return nil
 }
 
-func deleteSuscribe(id string) error {
-	querysql := fmt.Sprintf("DELETE FROM suscribe WHERE idevent='%s' ;", id)
-	conn := ConnectionDB()
+func deleteSuscribeUser(id string) error {
+	querysql := fmt.Sprintf("DELETE FROM suscribe WHERE iduser='%s' ;", id)
+	conn := db.ConnectionDB()
 	defer conn.Close()
 	query, err := conn.Prepare(querysql)
 	if err != nil {
@@ -41,6 +45,5 @@ func deleteSuscribe(id string) error {
 	if err != nil {
 		return err
 	}
-
 	return nil
 }

@@ -5,7 +5,11 @@ import (
 	"github.com/sebarray/wiselink/handler"
 )
 
-func main() {
+func init() {
 	config.Loadenv()
+}
+
+func main() {
+
 	handler.Manager()
 }

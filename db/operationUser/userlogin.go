@@ -1,4 +1,4 @@
-package db
+package operationUser
 
 import (
 	"github.com/sebarray/wiselink/model"
@@ -6,7 +6,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func Login(user model.User) (string, error) {
+func (us UserSql) Login(user model.User) (string, error) {
 
 	u, err := UserExist(user)
 	if err != nil {

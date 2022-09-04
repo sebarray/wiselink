@@ -1,19 +1,20 @@
-package db
+package operationEvent
 
 import (
 	"fmt"
 
+	"github.com/sebarray/wiselink/db"
 	"github.com/sebarray/wiselink/model"
 )
 
-func ReadEvents(filter model.Filter) ([]model.Event, error) {
+func (e EventSql) ReadEvents(filter model.Filter) ([]model.Event, error) {
 
-	Checkconnection()
+	db.Checkconnection()
 	var events []model.Event
 	var event model.Event
-	conn := ConnectionDB()
+	conn := db.ConnectionDB()
 	defer conn.Close()
-	registry, err := conn.Query(QueryReadEvents(filter))
+	registry, err := conn.Query(db.QueryReadEvents(filter))
 	if err != nil {
 		fmt.Println(err.Error())
 		return nil, err
@@ -32,12 +33,11 @@ func ReadEvents(filter model.Filter) ([]model.Event, error) {
 	return events, nil
 }
 
-//
 func ReadEvent(id string) (model.Event, error) {
 	var events []model.Event
 	var event model.Event
 	query := fmt.Sprintf("SELECT * FROM event where id='%s'", id)
-	registry, err := ConnectionDB().Query(query)
+	registry, err := db.ConnectionDB().Query(query)
 	if err != nil {
 		fmt.Println(err.Error())
 		return event, err

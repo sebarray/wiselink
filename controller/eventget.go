@@ -2,9 +2,10 @@ package controller
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/labstack/echo/v4"
-	"github.com/sebarray/wiselink/db"
+	"github.com/sebarray/wiselink/db/operationEvent"
 	"github.com/sebarray/wiselink/model"
 	"github.com/sebarray/wiselink/service"
 )
@@ -18,7 +19,8 @@ func GetEvents(ctx echo.Context) error {
 	if !claims.Admin {
 		filter.State = "publicado"
 	}
-	events, err := db.ReadEvents(filter)
+	typedb := operationEvent.GetProvider(os.Getenv("TYPE_DB"))
+	events, err := typedb.ReadEvents(filter)
 
 	if err != nil {
 		ctx.Error(err)

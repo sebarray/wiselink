@@ -4,12 +4,11 @@ import (
 	"os"
 
 	"github.com/labstack/echo/v4"
-	"github.com/sebarray/wiselink/config"
 	"github.com/sebarray/wiselink/routes/v1"
 )
 
 func Manager() {
-	config.Loadenv()
+
 	e := echo.New()
 	r := e.Group("/event")
 	routesSuscribe := e.Group("/suscribe")

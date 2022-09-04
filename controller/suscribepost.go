@@ -4,9 +4,10 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"os"
 
 	"github.com/labstack/echo/v4"
-	"github.com/sebarray/wiselink/db"
+	"github.com/sebarray/wiselink/db/operationSuscribe"
 	"github.com/sebarray/wiselink/model"
 	"github.com/sebarray/wiselink/service"
 )
@@ -25,8 +26,8 @@ func PostSuscribe(ctx echo.Context) error {
 		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
 		return err
 	}
-
-	db.CreateSuscribe(claims.Id, event)
+	typedb := operationSuscribe.GetProvider(os.Getenv("TYPE_DB"))
+	err = typedb.CreateSuscribe(claims.Id, event)
 
 	if err != nil {
 		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)

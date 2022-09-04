@@ -1,15 +1,16 @@
-package db
+package operationEvent
 
 import (
 	"fmt"
 
+	"github.com/sebarray/wiselink/db"
 	"github.com/sebarray/wiselink/model"
 )
 
 func update(event model.Event) error {
 
-	query := QueryUpdateEvents(event)
-	conn := ConnectionDB()
+	query := db.QueryUpdateEvents(event)
+	conn := db.ConnectionDB()
 	defer conn.Close()
 	insert, err := conn.Prepare(query)
 	if err != nil {
@@ -30,7 +31,7 @@ func update(event model.Event) error {
 	return nil
 }
 
-func EventUpdate(event model.Event) (model.Event, error) {
+func (e EventSql) UpdateEvent(event model.Event) (model.Event, error) {
 	eventf, err := ReadEvent(event.Id)
 	if err != nil {
 		return event, err

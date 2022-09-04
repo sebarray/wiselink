@@ -4,9 +4,10 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"os"
 
 	"github.com/labstack/echo/v4"
-	"github.com/sebarray/wiselink/db"
+	"github.com/sebarray/wiselink/db/operationEvent"
 	"github.com/sebarray/wiselink/model"
 	"github.com/sebarray/wiselink/service"
 )
@@ -27,7 +28,9 @@ func DeleteEvent(ctx echo.Context) error {
 		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
 		return err
 	}
-	err = db.DeleteEvent(event.Id)
+
+	typedb := operationEvent.GetProvider(os.Getenv("TYPE_DB"))
+	err = typedb.DeleteEvent(event.Id)
 	if err != nil {
 		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
 		return err

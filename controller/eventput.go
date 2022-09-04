@@ -4,9 +4,10 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"os"
 
 	"github.com/labstack/echo/v4"
-	"github.com/sebarray/wiselink/db"
+	"github.com/sebarray/wiselink/db/operationEvent"
 	"github.com/sebarray/wiselink/model"
 	"github.com/sebarray/wiselink/service"
 )
@@ -28,7 +29,8 @@ func PutEvent(ctx echo.Context) error {
 		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
 		return err
 	}
-	event, err = db.EventUpdate(event)
+	typedb := operationEvent.GetProvider(os.Getenv("TYPE_DB"))
+	event, err = typedb.UpdateEvent(event)
 	if err != nil {
 		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
 		return err

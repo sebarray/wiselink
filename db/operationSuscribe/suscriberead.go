@@ -1,18 +1,19 @@
-package db
+package operationSuscribe
 
 import (
 	"fmt"
 
+	"github.com/sebarray/wiselink/db"
 	"github.com/sebarray/wiselink/model"
 )
 
-func ReadSuscribe(filter, id string) ([]model.Event, error) {
+func (s SuscribeSql) ReadSuscribe(filter, id string) ([]model.Event, error) {
 
 	var suscribes []model.Event
 	var suscribe model.Event
-	conn := ConnectionDB()
+	conn := db.ConnectionDB()
 	defer conn.Close()
-	registry, err := conn.Query(QueryReadSuscribe(id, filter))
+	registry, err := conn.Query(db.QueryReadSuscribe(id, filter))
 	if err != nil {
 		fmt.Println(err.Error())
 		return nil, err

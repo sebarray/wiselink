@@ -1,22 +1,23 @@
-package db
+package operationEvent
 
 import (
 	"fmt"
 
 	"github.com/google/uuid"
+	"github.com/sebarray/wiselink/db"
 	"github.com/sebarray/wiselink/model"
 )
 
-func CreateEvent(event model.Event) (model.Event, error) {
+func (e EventSql) CreateEvent(event model.Event) (model.Event, error) {
 
 	event.Id = uuid.New().String()
 	err := create(event)
 	if err != nil {
 		return event, err
 	}
-	conn := ConnectionDB()
+	conn := db.ConnectionDB()
 	defer conn.Close()
-	insert, err := conn.Prepare(QueryCreateEvent(event))
+	insert, err := conn.Prepare(db.QueryCreateEvent(event))
 	if err != nil {
 		return event, err
 	}

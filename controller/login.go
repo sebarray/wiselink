@@ -4,9 +4,10 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"os"
 
 	"github.com/labstack/echo/v4"
-	"github.com/sebarray/wiselink/db"
+	"github.com/sebarray/wiselink/db/operationUser"
 	"github.com/sebarray/wiselink/model"
 )
 
@@ -21,7 +22,8 @@ func Login(ctx echo.Context) error {
 	if err != nil {
 		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
 	}
-	t, err = db.Login(user)
+	typedb := operationUser.GetProvider(os.Getenv("TYPE_DB"))
+	t, err = typedb.Login(user)
 
 	if err != nil {
 		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)

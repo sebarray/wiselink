@@ -1,21 +1,22 @@
-package db
+package operationUser
 
 import (
 	"fmt"
 
 	"github.com/google/uuid"
+	"github.com/sebarray/wiselink/db"
 	"github.com/sebarray/wiselink/model"
 )
 
-func CreateUser(user model.User) (model.User, error) {
+func (us UserSql) CreateUser(user model.User) (model.User, error) {
 	if user.Email == "" || user.Password == "" {
 		return user, fmt.Errorf("ocurrio un erro revise un request")
 
 	}
 	user.Id = uuid.New().String()
-	conn := ConnectionDB()
+	conn := db.ConnectionDB()
 	defer conn.Close()
-	insert, err := conn.Prepare(QueryCreateUser(user))
+	insert, err := conn.Prepare(db.QueryCreateUser(user))
 	if err != nil {
 		return user, err
 	}

@@ -1,8 +1,9 @@
-package db
+package operationUser
 
 import (
 	"fmt"
 
+	"github.com/sebarray/wiselink/db"
 	"github.com/sebarray/wiselink/model"
 	"github.com/sebarray/wiselink/service"
 )
@@ -16,7 +17,7 @@ func UserExist(u model.User) (model.User, error) {
 		return model.User{}, err
 	}
 	query := fmt.Sprintf("SELECT * FROM user where email='%s';", u.Email)
-	conn := ConnectionDB()
+	conn := db.ConnectionDB()
 	defer conn.Close()
 	registry, err := conn.Query(query)
 	if err != nil {

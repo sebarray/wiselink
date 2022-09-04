@@ -3,10 +3,12 @@ package controller
 import (
 	"encoding/json"
 	"io/ioutil"
+	"os"
+
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/sebarray/wiselink/db"
+	"github.com/sebarray/wiselink/db/operationUser"
 	"github.com/sebarray/wiselink/model"
 )
 
@@ -20,7 +22,8 @@ func PostUser(ctx echo.Context) error {
 	if err != nil {
 		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
 	}
-	user, err = db.CreateUser(user)
+	typedb := operationUser.GetProvider(os.Getenv("TYPE_DB"))
+	user, err = typedb.CreateUser(user)
 	if err != nil {
 		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
 	}
