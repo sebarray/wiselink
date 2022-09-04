@@ -1,8 +1,6 @@
 package controller
 
 import (
-	"encoding/json"
-	"io/ioutil"
 	"os"
 
 	"net/http"
@@ -14,13 +12,9 @@ import (
 
 func PostUser(ctx echo.Context) error {
 	var user model.User
-	body, err := ioutil.ReadAll(ctx.Request().Body)
+	err := ctx.Bind(&user)
 	if err != nil {
 		ctx.Error(err)
-	}
-	err = json.Unmarshal(body, &user)
-	if err != nil {
-		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
 	}
 	typedb := operationUser.GetProvider(os.Getenv("TYPE_DB"))
 	user, err = typedb.CreateUser(user)

@@ -1,8 +1,6 @@
 package controller
 
 import (
-	"encoding/json"
-	"io/ioutil"
 	"net/http"
 	"os"
 
@@ -20,14 +18,8 @@ func PostEvent(ctx echo.Context) error {
 	}
 	var event model.Event
 
-	body, err := ioutil.ReadAll(ctx.Request().Body)
-	if err != nil {
-
-		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
-		return err
-	}
-
-	err = json.Unmarshal(body, &event)
+	//	body, err := ioutil.ReadAll(ctx.Request().Body)
+	err := ctx.Bind(&event)
 	if err != nil {
 
 		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
