@@ -16,7 +16,8 @@ func GetSuscribe(ctx echo.Context) error {
 	typedb := operationSuscribe.GetProvider(os.Getenv("TYPE_DB"))
 	suscribes, err := typedb.ReadSuscribe(index[filter], claims.Id)
 	if err != nil {
-		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
+		http.Error(ctx.Response().Writer, err.Error(), http.StatusInternalServerError)
+		return err
 	}
 	return ctx.JSON(http.StatusOK, suscribes)
 }

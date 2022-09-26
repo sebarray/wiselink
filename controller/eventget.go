@@ -23,8 +23,8 @@ func GetEvents(ctx echo.Context) error {
 	events, err := typedb.ReadEvents(filter)
 
 	if err != nil {
-		ctx.Error(err)
-		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
+		http.Error(ctx.Response().Writer, err.Error(), http.StatusInternalServerError)
+		return err
 	}
 	return ctx.JSON(http.StatusOK, events)
 

@@ -15,14 +15,14 @@ func PostSuscribe(ctx echo.Context) error {
 	var event model.Event
 	err := ctx.Bind(&event)
 	if err != nil {
-		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
+		http.Error(ctx.Response().Writer, err.Error(), http.StatusInternalServerError)
 		return err
 	}
 	typedb := operationSuscribe.GetProvider(os.Getenv("TYPE_DB"))
 	err = typedb.CreateSuscribe(claims.Id, event)
 
 	if err != nil {
-		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
+		http.Error(ctx.Response().Writer, err.Error(), http.StatusInternalServerError)
 		return err
 	}
 

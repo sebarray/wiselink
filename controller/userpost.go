@@ -14,12 +14,14 @@ func PostUser(ctx echo.Context) error {
 	var user model.User
 	err := ctx.Bind(&user)
 	if err != nil {
-		ctx.Error(err)
+		http.Error(ctx.Response().Writer, err.Error(), http.StatusInternalServerError)
+		return err
 	}
 	typedb := operationUser.GetProvider(os.Getenv("TYPE_DB"))
 	user, err = typedb.CreateUser(user)
 	if err != nil {
-		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
+		http.Error(ctx.Response().Writer, err.Error(), http.StatusInternalServerError)
+		return err
 	}
 	user.Password = ""
 	return ctx.JSON(http.StatusOK, user)

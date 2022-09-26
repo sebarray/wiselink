@@ -20,13 +20,13 @@ func PostEvent(ctx echo.Context) error {
 
 	err := ctx.Bind(&event)
 	if err != nil {
-		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
+		http.Error(ctx.Response().Writer, err.Error(), http.StatusInternalServerError)
 		return err
 	}
 	typedb := operationEvent.GetProvider(os.Getenv("TYPE_DB"))
 	event, err = typedb.CreateEvent(event)
 	if err != nil {
-		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
+		http.Error(ctx.Response().Writer, err.Error(), http.StatusInternalServerError)
 		return err
 	}
 

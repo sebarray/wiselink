@@ -15,15 +15,16 @@ func Login(ctx echo.Context) error {
 
 	err := ctx.Bind(&user)
 	if err != nil {
-		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
+		http.Error(ctx.Response().Writer, err.Error(), http.StatusInternalServerError)
+		return err
 	}
 
 	typedb := operationUser.GetProvider(os.Getenv("TYPE_DB"))
 	t, err = typedb.Login(user)
 
 	if err != nil {
-		http.Error(ctx.Response().Writer, err.Error(), http.StatusConflict)
-
+		http.Error(ctx.Response().Writer, err.Error(), http.StatusInternalServerError)
+		return err
 	}
 
 	return ctx.JSON(http.StatusOK, echo.Map{
